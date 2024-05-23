@@ -17,7 +17,7 @@ class BookTest {
     @BeforeEach
     void setUp() {
         System.setOut(new PrintStream(outContent));
-        Book.books.clear(); 
+        Book.books.clear();;
     }
 
     @org.junit.jupiter.api.AfterEach
