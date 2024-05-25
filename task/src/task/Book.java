@@ -10,7 +10,7 @@ public class Book {
 	private String id;
     private String title;
     private String author;
-    private int year;
+    private int year;;
 
     static List<Book> books = new ArrayList<>();
 
@@ -23,7 +23,7 @@ public class Book {
 
     
     
-    public String getId() {
+    public String getId() 
         return id;
     }
 
