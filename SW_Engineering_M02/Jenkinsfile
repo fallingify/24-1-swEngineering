@@ -1,9 +1,42 @@
 pipeline {
     agent any
+
     stages {
-        stage('ls'){
-            steps{
-                sh 'ls'
+        stage('Build') {
+            steps {
+                // 빌드 단계의 실제 빌드 명령어
+                sh 'echo "Building the project..."'
+            }
+        }
+        stage('Test') {
+            steps {
+                // 테스트 단계의 실제 테스트 명령어
+                sh 'echo "Running tests..."'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                // 배포 단계의 실제 배포 명령어
+                sh 'echo "Deploying the project..."'
+            }
+        }
+    }
+
+    post {
+        success {
+            // 빌드가 성공하면 .txt 파일을 작성하는 단계
+            script {
+                def message = 'Build succeeded'
+                writeFile file: 'build_status.txt', text: message
+                archiveArtifacts artifacts: 'build_status.txt'
+            }
+        }
+        failure {
+            // 빌드가 실패하면 .txt 파일을 작성하는 단계
+            script {
+                def message = 'Build failed'
+                writeFile file: 'build_status.txt', text: message
+                archiveArtifacts artifacts: 'build_status.txt'
             }
         }
     }
