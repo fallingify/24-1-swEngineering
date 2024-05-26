@@ -10,14 +10,14 @@ pipeline {
         }
         stage('Test') {
             steps {
-                // 테스트 단계의 실제 테스트 명령어
-                sh 'echo "Running tests..."'
-                // JUnit 5 테스트 실행을 위한 classpath 설정
-             	def classpath = "classes:lib/*:/Applications/Eclipse\\ 2.app/Contents/Eclipse/plugins/junit-platform-console-standalone-1.7.1-all.jar"
-            	// JUnit 5 테스트 실행
-            	sh "java -cp ${classpath} org.junit.platform.console.ConsoleLauncher --scan-classpath > test_results.txt"
-             
-           
+                script {
+                    // 테스트 단계의 실제 테스트 명령어
+                    sh 'echo "Running tests..."'
+                    // JUnit 5 테스트 실행을 위한 classpath 설정
+                    def classpath = "classes:lib/*:\"/Applications/Eclipse 2.app/Contents/Eclipse/plugins/junit-platform-console-standalone-1.7.1-all.jar\""
+                    // JUnit 5 테스트 실행
+                    sh "java -cp ${classpath} org.junit.platform.console.ConsoleLauncher --scan-classpath > test_results.txt"
+                }
             }
         }
         stage('Deploy') {
@@ -29,24 +29,24 @@ pipeline {
     }
 
     post {
-    	always {
-			// 테스트 결과 파일을 저장하기 위해 아카이브
-			archiveArtifacts 'test_results.txt'
-		}
+        always {
+            // 테스트 결과 파일을 저장하기 위해 아카이브
+            archiveArtifacts artifacts: 'test_results.txt'
+        }
         success {
-            // 빌드가 성공하면 .txt 파일을 작성하는 단계
+            // 빌드가 성공하면 상태 메시지를 .txt 파일로 작성하는 단계
             script {
                 def message = 'Build succeeded'
-                writeFile file: 'test_results.txt', text: message
-                archiveArtifacts artifacts: 'test_results.txt'
+                writeFile file: 'build_status.txt', text: message
+                archiveArtifacts artifacts: 'build_status.txt'
             }
         }
         failure {
-            // 빌드가 실패하면 .txt 파일을 작성하는 단계
+            // 빌드가 실패하면 상태 메시지를 .txt 파일로 작성하는 단계
             script {
                 def message = 'Build failed'
-                writeFile file: 'test_results.txt', text: message
-                archiveArtifacts artifacts: 'test_results.txt'
+                writeFile file: 'build_status.txt', text: message
+                archiveArtifacts artifacts: 'build_status.txt'
             }
         }
     }
