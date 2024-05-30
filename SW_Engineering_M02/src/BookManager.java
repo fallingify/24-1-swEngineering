@@ -104,5 +104,29 @@ public class BookManager {
 		}
 
 	}
+	
+	//	bs_search
+	public void search_bs(int id) {
+		int left = 0;
+		int right = bookList.size() - 1;
+
+		while (left <= right) {
+			int mid = left + (right - left) / 2;
+			Book midBook = bookList.get(mid);
+
+			if (midBook.getId() == id) {
+				System.out.println("검색 결과:\n" + midBook);
+				return;
+			}
+
+			if (midBook.getId() < id) {
+				left = mid + 1;
+			} else {
+				right = mid - 1;
+			}
+		}
+		System.out.println("해당 ID(" + id + ")의 도서는 찾을 수 없습니다.");
+	}
+
 
 }
